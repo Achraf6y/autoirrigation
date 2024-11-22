@@ -77,6 +77,23 @@
           },
           "defaultConfiguration": "development"
         },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+          "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "autoirrigation:build:production",
+              "serveTarget": "autoirrigation:serve:production"
+            },
+          "development": {
+          "buildTarget": "autoirrigation:build:development",
+          "serveTarget": "autoirrigation:serve:development"
+          }
+          },
+          "defaultConfiguration": "production"
+        },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
         },
