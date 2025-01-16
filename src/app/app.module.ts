@@ -14,6 +14,7 @@ import { NgChartsModule } from 'ng2-charts';
 import 'chartjs-adapter-date-fns';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { Chart } from 'chart.js';
+import { GaugeComponent } from './components/gauge/gauge.component';
 
 // Register the zoom plugin
 Chart.register(zoomPlugin);
@@ -32,7 +33,8 @@ const routes: Routes = [
     TemperatureComponent,
     HumidityComponent,
     SoilMoistureComponent,
-    LightLevelComponent
+    LightLevelComponent,
+    GaugeComponent
   ],
   imports: [
     BrowserModule,

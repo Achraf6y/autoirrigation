@@ -5,10 +5,18 @@
     <div class="circle" [ngClass]="{ 'red': needsWatering }"></div>
     <p>{{ needsWatering ? 'Plant Needs Watering' : 'Plant is Well Watered' }}</p>
   </div>
-  <!-- Styled Moisture Value -->
+  <!-- Gauge Component -->
+  <app-gauge
+    [value]="latestMoisture"
+    [label]="'Soil Moisture'"
+    [color]="'#4CAF50'"
+    [unit]="'%'">
+  </app-gauge>
+  <!-- Styled Moisture Value 
   <div class="moisture-value">
     <p>{{ latestMoisture }} %</p>
   </div>
+  -->
   <!-- Line Chart -->
   <div class="chart-container">
     <h3>Soil Moisture Chart</h3>

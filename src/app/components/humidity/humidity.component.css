@@ -1,8 +1,16 @@
 .page-container {
   padding: 20px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+app-gauge {
+  margin: 20px 0;
+  width: 100%;
+  max-width: 300px;
+}
 .watering-indicator {
   margin: 20px auto;
   text-align: center;

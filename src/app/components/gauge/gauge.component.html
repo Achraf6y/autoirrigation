@@ -1,0 +1,29 @@
+<div class="gauge-container">
+    <div class="gauge-title">{{label}}</div>
+    <div class="gauge">
+      <svg width="200" height="200" class="progress-ring">
+        <!-- Background circle -->
+        <circle
+          class="progress-ring-circle-bg"
+          stroke-width="12"
+          fill="transparent"
+          [attr.r]="radius"
+          cx="100"
+          cy="100"/>
+        <!-- Progress circle -->
+        <circle
+          class="progress-ring-circle"
+          stroke-width="12"
+          fill="transparent"
+          [attr.r]="radius"
+          cx="100"
+          cy="100"
+          [style.stroke]="color"
+          [style.stroke-dasharray]="circumference"
+          [style.stroke-dashoffset]="dashoffset"/>
+      </svg>
+      <div class="gauge-value">
+        <span>{{value}}{{unit}}</span>
+      </div>
+    </div>
+  </div>

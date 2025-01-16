@@ -7,11 +7,19 @@
     <p>{{ needsWatering ? 'Plant Needs Watering' : 'Plant is Well Watered' }}</p>
   </div>
 
-  <!-- Styled Light Level Value -->
+  <!-- Gauge Component -->
+  <app-gauge
+    [value]="latestLightLevel"
+    [label]="'Light level'"
+    [color]="'#ffcf56'"
+    [unit]="'%'">
+  </app-gauge>
+
+  <!-- Styled Light Level Value 
   <div class="light-value">
     <p>{{ latestLightLevel }} %</p>
   </div>
-
+  -->
   <!-- Line Chart -->
   <div class="chart-container">
     <h3>Light Level Chart</h3>

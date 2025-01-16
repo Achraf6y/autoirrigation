@@ -6,12 +6,18 @@
     <div class="circle" [ngClass]="{ 'red': needsWatering }"></div>
     <p>{{ needsWatering ? 'Plant Needs Watering' : 'Plant is Well Watered' }}</p>
   </div>
-
-  <!-- Styled Humidity Value -->
+  <!-- Gauge Component -->
+  <app-gauge
+    [value]="latestHumidity"
+    [label]="'Humidity'"
+    [color]="'#4682B4'"
+    [unit]="'%'">
+  </app-gauge>
+  <!-- Styled Humidity Value 
   <div class="humidity-value">
     <p>{{ latestHumidity }}%</p>
   </div>
-
+  -->
   <!-- Line Chart -->
   <div class="chart-container">
     <h3>Humidity Chart</h3>

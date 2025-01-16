@@ -8,14 +8,17 @@ h1 {
     letter-spacing: 3px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     padding-bottom: 10px;
-    border-bottom: 3px solid #3498db;
+    border-bottom: 3px solid #4caf50;
     width: fit-content;
     margin: 20px auto;
   }
 
-.page-container {
+  .page-container {
     padding: 20px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   .watering-indicator {
@@ -65,4 +68,18 @@ h1 {
   
   .reset-button:hover {
     background-color: #45a049; /* Darker shade of green for hover */
+  }
+
+  .page-container {
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  app-gauge {
+    margin: 20px 0;
+    width: 100%;
+    max-width: 300px;
   }

@@ -7,10 +7,18 @@
     <p>{{ needsWatering ? 'Plant Needs Watering' : 'Plant is Well Watered' }}</p>
   </div>
 
-  <!-- Styled Temperature Value -->
+  <!-- Gauge Component -->
+  <app-gauge
+    [value]="latestTemperature"
+    [label]="'Temperature'"
+    [color]="'#ff6384'"
+    [unit]="'°C'">
+  </app-gauge>
+  <!-- Styled Temperature Value 
   <div class="temperature-value">
     <p>{{ latestTemperature }}°C</p>
   </div>
+  -->
 
   <!-- Line Chart -->
   <div class="chart-container">
