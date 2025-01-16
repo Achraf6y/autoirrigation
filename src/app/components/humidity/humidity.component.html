@@ -1,0 +1,8 @@
+<div [ngStyle]="{'background-color': needsWatering ? 'lightcoral' : 'white'}">
+    <h1>Humidity Data</h1>
+    <div *ngFor="let data of humidityData">
+      <p>Timestamp: {{ data.timestamp }}</p>
+      <p>Humidity: {{ data.humidity }} %</p>
+      <hr />
+    </div>
+</div>

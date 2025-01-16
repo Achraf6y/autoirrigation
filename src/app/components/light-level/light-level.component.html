@@ -1,0 +1,8 @@
+<div [ngStyle]="{'background-color': needsWatering ? 'lightcoral' : 'white'}">
+    <h1>Light Level Data</h1>
+    <div *ngFor="let data of lightLevelData">
+      <p>Timestamp: {{ data.timestamp }}</p>
+      <p>Luminosity: {{ data.luminosity }}</p>
+      <hr />
+    </div>
+</div>
