@@ -1,8 +1,25 @@
-<div [ngStyle]="{'background-color': needsWatering ? 'lightcoral' : 'white'}">
-    <h1>Soil Moisture Data</h1>
-    <div *ngFor="let data of soilMoistureData">
-      <p>Timestamp: {{ data.timestamp }}</p>
-      <p>Soil Moisture: {{ data.soilMoisture }}</p>
-      <hr />
+<div class="page-container">
+  <h1>Soil Moisture</h1>
+  <!-- Watering Status -->
+  <div class="watering-indicator">
+    <div class="circle" [ngClass]="{ 'red': needsWatering }"></div>
+    <p>{{ needsWatering ? 'Plant Needs Watering' : 'Plant is Well Watered' }}</p>
+  </div>
+  <!-- Styled Moisture Value -->
+  <div class="moisture-value">
+    <p>{{ latestMoisture }} %</p>
+  </div>
+  <!-- Line Chart -->
+  <div class="chart-container">
+    <h3>Soil Moisture Chart</h3>
+    <div class="chart-controls">
+      <button (click)="resetZoom()" class="reset-button">Reset Zoom</button>
     </div>
+    <canvas baseChart
+      [data]="lineChartData"
+      [options]="lineChartOptions"
+      type="line"
+      #chart>
+    </canvas>
+  </div>
 </div>

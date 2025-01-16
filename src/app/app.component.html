@@ -1,11 +1,11 @@
-<html>
-  <main> 
-  <nav>
-    <a routerLink="/temperature">Temperature</a> |
-    <a routerLink="/humidity">Humidity</a> |
-    <a routerLink="/soil-moisture">Soil Moisture</a> |
-    <a routerLink="/light-level">Light Level</a>
+<div class="app-container">
+  <nav class="sidebar">
+    <a routerLink="/temperature" routerLinkActive="active">Temperature</a>
+    <a routerLink="/humidity" routerLinkActive="active">Humidity</a>
+    <a routerLink="/soil-moisture" routerLinkActive="active">Soil Moisture</a>
+    <a routerLink="/light-level" routerLinkActive="active">Light Level</a>
   </nav>
-  <router-outlet></router-outlet>
-</main> 
-  </html>
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

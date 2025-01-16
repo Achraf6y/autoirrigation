@@ -15,10 +15,14 @@
   <!-- Line Chart -->
   <div class="chart-container">
     <h3>Humidity Chart</h3>
+    <div class="chart-controls">
+      <button (click)="resetZoom()" class="reset-button">Reset Zoom</button>
+    </div>
     <canvas baseChart
             [data]="lineChartData"
             [options]="lineChartOptions"
-            chartType="line">
+            type="line"
+            #chart>
     </canvas>
   </div>
 </div>

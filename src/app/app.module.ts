@@ -11,6 +11,12 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 import { CommonModule } from '@angular/common';
 import { NgChartsModule } from 'ng2-charts';
+import 'chartjs-adapter-date-fns';
+import zoomPlugin from 'chartjs-plugin-zoom';
+import { Chart } from 'chart.js';
+
+// Register the zoom plugin
+Chart.register(zoomPlugin);
 
 const routes: Routes = [
   { path: 'temperature', component: TemperatureComponent },

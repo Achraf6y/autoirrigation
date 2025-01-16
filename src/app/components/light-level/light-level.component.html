@@ -1,8 +1,28 @@
-<div [ngStyle]="{'background-color': needsWatering ? 'lightcoral' : 'white'}">
-    <h1>Light Level Data</h1>
-    <div *ngFor="let data of lightLevelData">
-      <p>Timestamp: {{ data.timestamp }}</p>
-      <p>Luminosity: {{ data.luminosity }}</p>
-      <hr />
+<div class="page-container">
+  <h1>Light Level</h1>
+
+  <!-- Watering Status -->
+  <div class="watering-indicator">
+    <div class="circle" [ngClass]="{ 'red': needsWatering }"></div>
+    <p>{{ needsWatering ? 'Plant Needs Watering' : 'Plant is Well Watered' }}</p>
+  </div>
+
+  <!-- Styled Light Level Value -->
+  <div class="light-value">
+    <p>{{ latestLightLevel }} %</p>
+  </div>
+
+  <!-- Line Chart -->
+  <div class="chart-container">
+    <h3>Light Level Chart</h3>
+    <div class="chart-controls">
+      <button (click)="resetZoom()" class="reset-button">Reset Zoom</button>
     </div>
+    <canvas baseChart
+            [data]="lineChartData"
+            [options]="lineChartOptions"
+            type="line"
+            #chart>
+    </canvas>
+  </div>
 </div>
