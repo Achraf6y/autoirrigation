@@ -9,6 +9,8 @@ import { LightLevelComponent } from './components/light-level/light-level.compon
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
+import { CommonModule } from '@angular/common';
+import { NgChartsModule } from 'ng2-charts';
 
 const routes: Routes = [
   { path: 'temperature', component: TemperatureComponent },
@@ -30,7 +32,10 @@ const routes: Routes = [
     BrowserModule,
     RouterModule.forRoot(routes),
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    RouterModule.forRoot([]),
+    CommonModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

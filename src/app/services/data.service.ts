@@ -4,12 +4,14 @@ import { Observable } from 'rxjs';
 
 export interface SensorData {
   Timestamp: string;
-  Temperature: number;
   Humidity: number;
   'Soil Moisture': number;
+  Temperature: number;
   Luminosity: number;
-  NeedsWatering: number;
+  NeedsWatering: number; // Ensure this is either 0 or 1
 }
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -20,4 +22,5 @@ export class DataService {
   getSensorData(): Observable<SensorData[]> {
     return this.db.list<SensorData>('/SensorData').valueChanges();
   }
+  
 }

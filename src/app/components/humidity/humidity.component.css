@@ -1,0 +1,36 @@
+.page-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.watering-indicator {
+  margin: 20px auto;
+  text-align: center;
+}
+
+.circle {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background-color: grey; /* Default color for "well watered" */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease; /* Smooth transition for color changes */
+}
+
+.circle.red {
+  background-color: red; /* Color for "needs watering" */
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+}
+
+.humidity-value {
+  font-size: 4rem; /* Large text size for the value */
+  font-weight: bold; /* Bold font weight */
+  color: rgba(75, 192, 192, 1); /* Nice color for display */
+  margin: 20px auto;
+}
+
+.chart-container {
+  margin: 20px auto;
+  max-width: 500px;
+}
