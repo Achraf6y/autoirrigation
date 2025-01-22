@@ -17,14 +17,14 @@
 #include "addons/RTDBHelper.h"
 
 // Insert your network credentials
-#define WIFI_SSID "Gha talaba"
-#define WIFI_PASSWORD "12345678"
+#define WIFI_SSID "WIFI_SSID"
+#define WIFI_PASSWORD "WIFI_PASSWORD"
 
 // Insert Firebase project API Key
-#define API_KEY "add your API_KEY"
+#define API_KEY "APIKEY"
 
 // Insert RTDB URLefine the RTDB URL */
-#define DATABASE_URL "add your Database_URL"
+#define DATABASE_URL "DATABASE_URL"
 
 //Define Firebase Data object
 FirebaseData fbdo;
@@ -44,13 +44,14 @@ const int DHT11_pin = 32;
 
 DHT dht(DHT11_pin, DHTTYPE);
 
-const int humidite_sol_pin = 34;  // connecter sur GPIO 34 (Analog ADC1_CH6)
+const int humidite_sol_pin = 34;
 
 int humidite_sol_Val = 0;
 
 const char* ntpServer = "pool.ntp.org";
-const long gmtOffset_sec = 3600;  // ajuster pour notre timezone (GMT+1)
+const long gmtOffset_sec = 3600;  // adjust to our timezone currently (GMT+1)
 const int daylightOffset_sec = 3600;
+const int pump_pin = 27; // GPIO pin for the pump relay
 
 void setup() {
   dht.begin();
@@ -94,8 +95,7 @@ void setup() {
     Serial.printf("%s\n", config.signer.signupError.message.c_str());
   }
 
-  /* Assign the callback function for the long running token generation task */
-  config.token_status_callback = tokenStatusCallback;  //see addons/TokenHelper.h
+  config.token_status_callback = tokenStatusCallback;
 
   Firebase.begin(&config, &auth);
   Firebase.reconnectWiFi(true);
@@ -114,61 +114,73 @@ String getFormattedTimestamp() {
 }
 
 void loop() {
-  // Le temps de prise des mesures
+  // Retrieve timestamp
   String timestamp = getFormattedTimestamp();
 
+  // Stabilize and validate light sensor readings
   float lux;
-  /* le capteur de luminosité n'est pas stable au debut et retourne une valeur de 0 se qui pourra causer des problems
-    lors de l'affichage de la courbe de developement en fonction du temps, pour resoudre ce problem, on ne commence 
-    à stocker les valeurs que lorsqu'elles sont supperieurent à zero.
-  */
-  int retryCount = 3;  // max des essaies
+  int retryCount = 3; // Maximum number of retries for the light sensor
   while (retryCount > 0) {
     als.getALSLux(lux);
-    if (lux > 0) break;  // accepter si la valeur est plus que 0
-    delay(500);          // sinon laisser le capteur se stabiliser
+    if (lux > 0) break; // Accept the reading if it's non-zero
+    delay(500);         // Allow the sensor to stabilize
     retryCount--;
   }
-  float lux_percentage = map(lux, 0, 800, 0, 100);  // mettre la valeur en pourcentage
-  if (lux_percentage > 100) lux_percentage = 100;   // maxer a 100%
+  float lux_percentage = map(lux, 0, 800, 0, 100);  // Convert lux to percentage
+  lux_percentage = constrain(lux_percentage, 0, 100);
 
   Serial.println("Timestamp = " + timestamp);
   Serial.print("Luminosity = ");
   Serial.print(lux_percentage);
   Serial.println(" %");
 
-
+  // Read soil moisture and determine needsWatering
   humidite_sol_Val = analogRead(humidite_sol_pin);
-  int humidite_sol_percentage = map(humidite_sol_Val, 0, 3000, 0, 100);  // mettre la valeur en pourcentage
-  if (humidite_sol_percentage > 100) humidite_sol_percentage = 100;      // rendre le max à 100%
-  if (humidite_sol_percentage < 0) humidite_sol_percentage = 0;          // et le min à 0%
+  int humidite_sol_percentage = map(humidite_sol_Val, 0, 3000, 0, 100);  // Convert soil moisture to percentage
+  humidite_sol_percentage = constrain(humidite_sol_percentage, 0, 100);
 
   Serial.print("Soil Moisture = ");
   Serial.print(humidite_sol_percentage);
   Serial.println(" %");
 
-  // affichage des valeur prise par le Dht 11
-  float temperature;
-  float humidity;
-  temperature = dht.readTemperature();
-  humidity = dht.readHumidity();
+  // Determine if watering is needed
+  int needsWatering =  0;
 
-  Serial.println("Temperature = " + String(dht.readTemperature()) + " °C");
-  Serial.println("Humidity = " + String(dht.readHumidity()) + " %");
+  // Control the water pump based on soil moisture percentage
+  if (humidite_sol_percentage < 30) {
+    digitalWrite(pump_pin, HIGH); // Turn the pump on
+    needsWatering =  1;
+  } else if (humidite_sol_percentage > 58) {
+    digitalWrite(pump_pin, LOW); // Turn the pump off
+    needsWatering =  0;
+  }
+
+  // Display needsWatering status
+  Serial.print("Needs Watering = ");
+  Serial.println(needsWatering);
+
+  // Read temperature and humidity
+  float temperature = dht.readTemperature();
+  float humidity = dht.readHumidity();
+
+  Serial.println("Temperature = " + String(temperature) + " °C");
+  Serial.println("Humidity = " + String(humidity) + " %");
   Serial.println("****************");
 
-  // // envoie des donnees vers Firebase Realtime Database chaque 8 secondes
-  if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 8000 || sendDataPrevMillis == 0)) {
+  // Send data to Firebase every 4 seconds
+  if (Firebase.ready() && signupOK && (millis() - sendDataPrevMillis > 4000 || sendDataPrevMillis == 0)) {
     sendDataPrevMillis = millis();
 
-    // creation de l'objet JSON
+    // Create the JSON object
     FirebaseJson json;
     json.set("Luminosity", lux_percentage);
     json.set("Soil Moisture", humidite_sol_percentage);
     json.set("Temperature", temperature);
     json.set("Humidity", humidity);
+    json.set("NeedsWatering", needsWatering);
     json.set("Timestamp", timestamp);
 
+    // Push data to Firebase
     if (Firebase.RTDB.pushJSON(&fbdo, "/SensorData", &json)) {
       Serial.println("Data sent successfully");
     } else {
@@ -176,6 +188,6 @@ void loop() {
     }
   }
 
-
   delay(2000);
 }
+
